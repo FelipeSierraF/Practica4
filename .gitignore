@@ -23,6 +23,7 @@ Makefile
 *.out
 *.app
 dataset/
+codificados/
 
 
 # OS

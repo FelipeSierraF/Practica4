@@ -8,7 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(Practica4 main.cpp
     auxiliares.h auxiliares.cpp
     README.md
-    .gitignore)
+    .gitignore
+    codificar.h codificar.cpp)
 
 include(GNUInstallDirs)
 install(TARGETS Practica4

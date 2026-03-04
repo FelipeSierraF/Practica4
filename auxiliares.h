@@ -1,10 +1,10 @@
 #ifndef AUXILIARES_H
 #define AUXILIARES_H
 
-class auxiliares
-{
-public:
-    auxiliares();
-};
+#include <string>
+
+bool validarEntrada(std::string n);
+unsigned char *leerArchivo(int &tam);
+void guardarArchivoBin(const unsigned char* datos, int tam);
 
 #endif // AUXILIARES_H
