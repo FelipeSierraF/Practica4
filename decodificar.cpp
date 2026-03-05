@@ -1,55 +1,17 @@
-#include "codificar.h"
+#include "decodificar.h"
 #include "auxiliares.h"
+#include "codificar.h"
 #include <iostream>
-#include <string>
 
-int recibirSemilla(){
-    std::cout << "Ingrese el tamaño de la semilla: ";
-    std::string semilla;
-    std::getline(std::cin, semilla);
-
-    while(!validarEntrada(semilla)){
-        std::cout << "\nError: opcion invalida, ingrese solo numeros ";
-        std::getline(std::cin, semilla);
-    }
-
-    int n = stoi(semilla);
-
-    if(n == 0){
-        n+=1;
-    }
-
-    return n;
-
-}
-
-int recibirMetodo(){
-    std::cout << "Ingrese el metodo: ";
-    std::string semilla;
-    std::getline(std::cin, semilla);
-
-    while(!validarEntrada(semilla)){
-        std::cout << "\nError: opcion invalida, ingrese solo numeros ";
-        std::getline(std::cin, semilla);
-    }
-
-    int n = stoi(semilla);
-
-    return n;
-}
-
-unsigned char* codificarMetodo1(const unsigned char* buffer, int tam, int semilla) {
+unsigned char* decodificarMetodo1(const unsigned char* bufferCodificado, int tam, int semilla) {
     int n = semilla;
     int totalBits = tam * 8;
     int numBloques = (totalBits + n - 1) / n;
 
-    unsigned char* original = new unsigned char[tam];
-    for (int i = 0; i < tam; i++)
-        original[i] = buffer[i];
-
+    // Aquí iremos reconstruyendo el archivo original
     unsigned char* resultado = new unsigned char[tam];
     for (int i = 0; i < tam; i++)
-        resultado[i] = buffer[i];
+        resultado[i] = bufferCodificado[i];
 
     auto getBitFrom = [&](const unsigned char* buf, int pos) -> int {
         int byteIdx = pos / 8;
@@ -76,6 +38,7 @@ unsigned char* codificarMetodo1(const unsigned char* buffer, int tam, int semill
         if (fin > totalBits) fin = totalBits;
 
         if (b == 0) {
+            // El primer bloque siempre se invierte completamente
             for (int i = inicio; i < fin; i++)
                 flipBit(i);
         } else {
@@ -85,29 +48,31 @@ unsigned char* codificarMetodo1(const unsigned char* buffer, int tam, int semill
 
             int unos  = 0;
             int ceros = 0;
+
             for (int i = prevInicio; i < prevFin; i++) {
-                if (getBitFrom(original, i) == 1) unos++;
-                else ceros++;
+                if (getBitFrom(resultado, i) == 1) unos++;
+                else                               ceros++;
             }
 
             if (unos == ceros) {
                 for (int i = inicio; i < fin; i++)
                     flipBit(i);
-            } else if (ceros > unos) {
+            }
+            else if (ceros > unos) {
                 for (int i = inicio; i < fin; i += 2)
                     flipBit(i);
-            } else {
+            }
+            else {
                 for (int i = inicio; i < fin; i += 3)
                     flipBit(i);
             }
         }
     }
 
-    delete[] original;
     return resultado;
 }
 
-unsigned char* codificarMetodo2(const unsigned char* buffer, int tam, int semilla) {
+unsigned char* decodificarMetodo2(const unsigned char* bufferCodificado, int tam, int semilla) {
     int n = semilla;
     int totalBits = tam * 8;
 
@@ -136,12 +101,15 @@ unsigned char* codificarMetodo2(const unsigned char* buffer, int tam, int semill
         int inicio = b * n;
         int fin    = inicio + n;
         if (fin > totalBits) fin = totalBits;
+
         int bitsEnBloque = fin - inicio;
 
         for (int i = 0; i < bitsEnBloque; i++) {
-            int posOrigen   = inicio + ((i - 1 + bitsEnBloque) % bitsEnBloque);
-            int posDestino  = inicio + i;
-            setBit(posDestino, getBit(buffer, posOrigen));
+            // Rotación inversa: desplazamiento a la izquierda
+            int posOrigen  = inicio + ((i + 1) % bitsEnBloque);
+            int posDestino = inicio + i;
+
+            setBit(posDestino, getBit(bufferCodificado, posOrigen));
         }
     }
 
@@ -149,11 +117,12 @@ unsigned char* codificarMetodo2(const unsigned char* buffer, int tam, int semill
 }
 
 
-void menuCodificar(){
+void menuDecodificar(){
     std::cout << std::endl;
-    std::cout << "===============Bienvenido al menu de codificación===============" << std::endl;
+    std::cout << "===============Bienvenido al menu de decodificación=======================" << std::endl;
+
     int tam = 0;
-    unsigned char* buffer = leerArchivo(tam); // Función que lee el archivo, es como un mini menú
+    unsigned char* buffer = leerArchivoBin(tam);
 
     if (!buffer) {
         std::cout << "Error al cargar archivo.\n";
@@ -166,25 +135,21 @@ void menuCodificar(){
         //(No esta condicionada a x cantidad de numeros)
 
         if(metodo == 1){
-            unsigned char* codificado = codificarMetodo1(buffer, tam, semilla);
-            guardarArchivoBin(codificado, tam);
-            delete[] codificado;
-            codificado = nullptr;
+            unsigned char* decodificado = decodificarMetodo1(buffer,tam,semilla);
+            guardarArchivoBinDeco(decodificado,tam);
+            delete[] decodificado;
+            decodificado = nullptr;
             break;
 
         }else if(metodo == 2){
-            unsigned char* codificado = codificarMetodo2(buffer, tam, semilla);
-            guardarArchivoBin(codificado, tam);
-            delete[] codificado;
-            codificado = nullptr;
+            unsigned char* decodificado = decodificarMetodo2(buffer,tam,semilla);
+            guardarArchivoBinDeco(decodificado,tam);
+            delete[] decodificado;
+            decodificado = nullptr;
             break;
 
         }else if(metodo == 0){
             break;
-        }else{
-            std::cout << "No existe esa opción, lea imbecil" << std::endl;
         }
     }
-
-    delete[] buffer;
 }

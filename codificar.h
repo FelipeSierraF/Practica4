@@ -3,6 +3,8 @@
 
 #include <string>
 void menuCodificar();
+int recibirSemilla();
+int recibirMetodo();
 
 
 #endif // CODIFICAR_H

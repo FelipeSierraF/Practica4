@@ -22,8 +22,11 @@ Makefile
 *.exe
 *.out
 *.app
+
+#Directorios
 dataset/
 codificados/
+decofidicados/
 
 
 # OS

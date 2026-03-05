@@ -9,7 +9,8 @@ add_executable(Practica4 main.cpp
     auxiliares.h auxiliares.cpp
     README.md
     .gitignore
-    codificar.h codificar.cpp)
+    codificar.h codificar.cpp
+    decodificar.h decodificar.cpp)
 
 include(GNUInstallDirs)
 install(TARGETS Practica4
