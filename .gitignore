@@ -27,6 +27,7 @@ Makefile
 dataset/
 codificados/
 decofidicados/
+usuarios/
 
 
 # OS

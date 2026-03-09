@@ -1,6 +1,7 @@
 #include "auxiliares.h"
 #include "codificar.h"
 #include "decodificar.h"
+#include "registrousuarios.h"
 #include <iostream>
 #include <string>
 
@@ -11,8 +12,9 @@ int main(){
     while(true){
         cout << "===============Practica4================" << endl;
         cout << "Ingrese una de las siguientes opciones: " << endl;
-        cout << "Ejercicio 1" << endl;
-        cout << "Ejercicio 2" << endl;
+        cout << "1.Ejercicio 1" << endl;
+        cout << "2.Ejercicio 2" << endl;
+        cout << "3.Sistema de registro de usuarios" << endl;
         cout << "Ingrese 0 para finalizar la ejecución: ";
 
         std::string n;
@@ -23,10 +25,10 @@ int main(){
             getline(cin,n);
             continue;
         }
+
         if(n == "1"){
             menuCodificar();
             std::string exit = validarSalida();
-
             std::cout << std::endl;
 
             if(exit == "S" || exit == "s")continue;
@@ -34,6 +36,16 @@ int main(){
 
         }else if(n == "2"){
             menuDecodificar();
+            std::string exit = validarSalida();
+            std::cout << std::endl;
+
+            if(exit == "S" || exit == "s")continue;
+            else break;
+
+        }else if(n == "3"){
+            menuRegistroUsuarios();
+            std::string exit = validarSalida();
+
         }else if(n == "0"){
             break;
         }

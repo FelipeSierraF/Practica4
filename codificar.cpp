@@ -163,7 +163,7 @@ void menuCodificar(){
     while(true){
         int semilla = recibirSemilla(); // Función que se encarga de recibir y validar la semilla
         int metodo = recibirMetodo(); // Función que recibe el numero por el cual se va a codificar
-        //(No esta condicionada a x cantidad de numeros)
+        //(No esta condicionada a "x" cantidad de numeros)
 
         if(metodo == 1){
             unsigned char* codificado = codificarMetodo1(buffer, tam, semilla);
