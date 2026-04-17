@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(Practica4 main.cpp
     README.md
-    .gitignore)
+    .gitignore
+    Router.h Router.cpp
+    Network.h Network.cpp)
 
 include(GNUInstallDirs)
 install(TARGETS Practica4
