@@ -2,6 +2,8 @@
 
 Router::Router() {}
 
+
+/*Asignamos el nombre de la clave :v*/
 Router::Router(std::string nombre){
     id = nombre;
 }

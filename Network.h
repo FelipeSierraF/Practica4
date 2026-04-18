@@ -15,7 +15,8 @@ private:
 public:
     void agregarRouter(const std::string& id);
     void imprimirRouters();
-    void conectar(const std::string& r1, const std::string& r2, int costo);
+    void conectarRouters(const std::string& r1, const std::string& r2, int costo, bool recompute = true);
+    void computerAllRoutes();
 };
 
 #endif // NETWORK_H
