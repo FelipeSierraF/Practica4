@@ -14,9 +14,16 @@ private:
 
 public:
     void agregarRouter(const std::string& id);
-    void imprimirRouters();
     void conectarRouters(const std::string& r1, const std::string& r2, int costo, bool recompute = true);
+    void mostrarRed() const;
     void computerAllRoutes();
+    void removelink(const std::string& id1, std::string& id2, bool recompute = true);
+    bool loadFromFile(const std::string& path);
+    void removeRouter(const std::string&, bool recompute = true);
+    void generateRandom(int n, double density, int maxCost);
+
+    int getCosto(const std::string& src, const std::string& dst) const;
+    std::vector<std::string> getPath(const std::string& src, const std::string& dst) const;
 };
 
 #endif // NETWORK_H
